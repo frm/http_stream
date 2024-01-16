@@ -43,9 +43,9 @@ if Code.ensure_loaded?(Mint.HTTP) do
       Mint.HTTP.request(
         conn,
         request.method,
-        request.path,
+        request.path_with_query,
         request.headers,
-        request.body
+        Jason.encode!(request.body)
       )
     end
 

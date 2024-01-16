@@ -8,9 +8,11 @@ defmodule HTTPStream.Request do
   * `host`: `binary()` - e.g. `"localhost"`
   * `port`: `integer()` - e.g. `80`
   * `path`: `binary()` - e.g `"/users/1/avatar.png"`
+  * `path_with_query`: `binary()` - e.g `"/users/1/avatar.png?foo=bar"`
   * `method`: `String.t()` - e.g. `"GET"`
   * `headers`: `keyword()` - e.g. `[authorization: "Bearer 123"]`
-  * `body`: `binary()` - e.g. `{ "id": "1" }`
+  * `query`: `keyword()` - e.g. `[id: "1"]`
+  * `body`: `map()` - e.g. `%{id: "1"}`
   """
 
   @supported_methods ~w(GET OPTIONS HEAD TRACE POST PUT PATCH DELETE)
@@ -19,18 +21,22 @@ defmodule HTTPStream.Request do
             host: nil,
             port: 80,
             path: "/",
+            path_with_query: "/",
             method: "GET",
             headers: [],
-            body: ""
+            query: [],
+            body: %{}
 
   @type t :: %__MODULE__{
           scheme: atom() | nil,
           host: binary() | nil,
           port: integer(),
           path: binary(),
+          path_with_query: binary(),
           method: binary(),
           headers: keyword(),
-          body: binary()
+          query: keyword(),
+          body: map()
         }
 
   @doc """
@@ -54,16 +60,21 @@ defmodule HTTPStream.Request do
     uri = URI.parse(url)
     scheme = String.to_atom(uri.scheme)
     headers = Keyword.get(opts, :headers, [])
-    {body, query} = body_and_query_from_method(method, opts)
-    path = encode_query_params(uri.path || "/", query)
+    body = Keyword.get(opts, :body, %{})
+    query_from_uri = query_from_uri(uri)
+    query = Keyword.merge(query_from_uri, Keyword.get(opts, :query, []))
+    path = uri.path || "/"
+    path_with_query = encode_query_params(path, query)
 
     %__MODULE__{
       scheme: scheme,
       host: uri.host,
       port: uri.port,
       path: path,
+      path_with_query: path_with_query,
       method: method,
       headers: headers,
+      query: query,
       body: body
     }
   end
@@ -79,14 +90,19 @@ defmodule HTTPStream.Request do
     raise ArgumentError, "URL must be a string"
   end
 
-  def url_for(%__MODULE__{scheme: scheme, host: host, port: port, path: path}) do
+  def url_for(%__MODULE__{
+        scheme: scheme,
+        host: host,
+        port: port,
+        path_with_query: path_with_query
+      }) do
     [
       scheme,
       "://",
       host,
       ":",
       port,
-      path
+      path_with_query
     ]
     |> Enum.join("")
   end
@@ -97,14 +113,13 @@ defmodule HTTPStream.Request do
     path <> "?" <> URI.encode_query(query)
   end
 
-  defp body_and_query_from_method(method, opts)
-       when method in ~w(GET OPTIONS HEAD TRACE DELETE) do
-    query = Keyword.get(opts, :body, [])
-    {"", query}
-  end
+  defp query_from_uri(%URI{query: nil}), do: []
 
-  defp body_and_query_from_method(_, opts) do
-    body = Keyword.get(opts, :body, "")
-    {body, []}
+  defp query_from_uri(%URI{query: query}) do
+    query
+    |> URI.decode_query()
+    |> Enum.into([], fn {k, v} ->
+      {String.to_atom(k), v}
+    end)
   end
 end

@@ -19,5 +19,7 @@ defmodule HTTPStream.HTTPServer.RespondWithFixture do
     File.stream!(@fixture)
     |> Stream.map(&chunk(conn, &1))
     |> Stream.run()
+
+    conn
   end
 end

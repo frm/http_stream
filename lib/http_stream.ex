@@ -123,9 +123,10 @@ defmodule HTTPStream do
   @spec post(String.t(), keyword()) :: Enumerable.t()
   def post(url, opts \\ []) do
     headers = Keyword.get(opts, :headers, []) |> to_keyword()
-    params = Keyword.get(opts, :params, "") |> to_json()
+    query = Keyword.get(opts, :query, [])
+    params = Keyword.get(opts, :params, %{})
 
-    request("POST", url, headers, params)
+    request("POST", url, headers, query, params)
   end
 
   @doc """
@@ -140,9 +141,10 @@ defmodule HTTPStream do
   @spec put(String.t(), keyword()) :: Enumerable.t()
   def put(url, opts \\ []) do
     headers = Keyword.get(opts, :headers, []) |> to_keyword()
-    params = Keyword.get(opts, :params, "") |> to_json()
+    query = Keyword.get(opts, :query, [])
+    params = Keyword.get(opts, :params, %{})
 
-    request("PUT", url, headers, params)
+    request("PUT", url, headers, query, params)
   end
 
   @doc """
@@ -157,9 +159,10 @@ defmodule HTTPStream do
   @spec patch(String.t(), keyword()) :: Enumerable.t()
   def patch(url, opts \\ []) do
     headers = Keyword.get(opts, :headers, []) |> to_keyword()
-    params = Keyword.get(opts, :params, "") |> to_json()
+    query = Keyword.get(opts, :query, [])
+    params = Keyword.get(opts, :params, %{})
 
-    request("PATCH", url, headers, params)
+    request("PATCH", url, headers, query, params)
   end
 
   @doc """
@@ -169,8 +172,8 @@ defmodule HTTPStream do
   """
 
   @spec request(method(), String.t(), keyword(), binary()) :: Enumerable.t()
-  def request(method, url, headers \\ [], body \\ "") do
-    Request.new(method, url, headers: headers, body: body)
+  def request(method, url, headers \\ [], query \\ [], body \\ %{}) do
+    Request.new(method, url, headers: headers, query: query, body: body)
     |> do_request()
   end
 
@@ -186,8 +189,6 @@ defmodule HTTPStream do
     Stream.map(enum, fn {k, v} -> {to_string(k), v} end)
     |> Enum.to_list()
   end
-
-  defp to_json(term), do: Jason.encode!(term)
 
   defp adapter, do: Application.get_env(:http_stream, :adapter, Adapter.Mint)
 end
