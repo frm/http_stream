@@ -68,7 +68,7 @@ If you want to setup the project for local development, you can just run the
 following commands.
 
 ```
-git clone git@github.com:subvisual/http_stream.git
+git clone git@github.com:frm/http_stream.git
 cd http_stream
 bin/setup
 ```
@@ -82,24 +82,12 @@ Feel free to contribute!
 If you found a bug, open an issue. You can also open a PR for bugs or new
 features. Your PRs will be reviewed and subjected to our styleguide and linters.
 
-All contributions **must** follow the [Code of Conduct][coc]
-and [Subvisual's guides][subvisual-guides].
+All contributions **must** follow the [Code of Conduct][coc].
 
-## About
-
-HTTPStream is maintained with ❤️  by [Subvisual][subvisual].
-
-<br>
-
-![Subvisual][subvisual-logo]
-
-[build-badge]: https://github.com/subvisual/http_stream/workflows/build/badge.svg
-[build]: https://github.com/subvisual/http_stream/actions?query=workflow%3Abuild
+[build-badge]: https://github.com/frm/http_stream/workflows/build/badge.svg
+[build]: https://github.com/frm/http_stream/actions?query=workflow%3Abuild
 [zstream]: https://github.com/ananthakumaran/zstream
 [mint]: https://github.com/elixir-mint/mint
 [httpoison]: https://github.com/edgurgel/httpoison
 [docs]: https://hexdocs.pm/http_stream
-[subvisual]: https://subvisual.com
-[subvisual-guides]: https://github.com/subvisual/guides
-[subvisual-logo]: https://raw.githubusercontent.com/subvisual/guides/master/github/templates/logos/blue.png
-[coc]: https://github.com/subvisual/http_stream/blob/master/CODE_OF_CONDUCT.md
+[coc]: https://github.com/frm/http_stream/blob/master/CODE_OF_CONDUCT.md
