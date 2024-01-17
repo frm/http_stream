@@ -41,7 +41,7 @@ def deps do
   [
     # NOTE: 1.1.0 is unreleased as of right now, for now you can use this github ref
     # {:http_stream, "~> 1.1.0"},
-    {:http_stream, github: "frm/http_stream", ref: "10ddc3b"},
+    {:http_stream, github: "frm/http_stream", ref: "f4762d1"},
 
     # if using the Mint adapter:
     {:castore, ">= 1.0.0"},
