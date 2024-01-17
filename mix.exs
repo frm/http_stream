@@ -35,13 +35,13 @@ defmodule HTTPStream.MixProject do
 
   defp deps do
     [
-      {:castore, "~> 1.0.0", optional: true},
-      {:mint, "~> 1.5.0", optional: true},
-      {:httpoison, "~> 2.0.0", optional: true},
+      {:jason, ">= 1.4.0"},
+      {:castore, ">= 1.0.0", optional: true},
+      {:mint, ">= 1.5.0", optional: true},
+      {:httpoison, ">= 2.0.0", optional: true},
       {:credo, "~> 1.7.3", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: :dev, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:jason, "~> 1.4", only: [:dev, :test]},
       {:plug_cowboy, "~> 2.0", only: :test}
     ]
   end

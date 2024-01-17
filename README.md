@@ -27,10 +27,10 @@ Streaming multiple images into a ZIP archive (using [zstream][zstream])
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Development](#development)
-* [Contributing](#contributing)
-* [About](#about)
+- [Installation](#installation)
+- [Development](#development)
+- [Contributing](#contributing)
+- [About](#about)
 
 ## Installation
 
@@ -39,14 +39,16 @@ First, you need to add `http_stream` to your list of dependencies on `mix.exs`:
 ```elixir
 def deps do
   [
-    {:http_stream, "~> 1.0.0"},
+    # NOTE: 1.1.0 is unreleased as of right now, for now you can use this github ref
+    # {:http_stream, "~> 1.1.0"},
+    {:http_stream, github: "frm/http_stream", ref: "10ddc3b"},
 
     # if using the Mint adapter:
-    {:castore, "~> 0.1.7"},
-    {:mint, "~> 1.1.0"}
+    {:castore, ">= 1.0.0"},
+    {:mint, ">= 1.5.0"}
 
     # if using the HTTPoison adapter:
-    {:httpoison, "~> 1.7.0"}
+    {:httpoison, ">= 2.0.0"}
   ]
 end
 ```
